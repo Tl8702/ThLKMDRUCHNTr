@@ -1,0 +1,29 @@
+name: flutter_admin_app
+description: A Flutter admin app for educational content management.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^3.0.0
+  firebase_auth: ^3.0.0
+  cloud_firestore: ^4.0.0
+  firebase_storage: ^11.0.0
+  shared_preferences: ^2.0.0
+  flutter_dotenv: ^5.0.2
+  provider: ^6.0.0
+  video_player: ^2.8.0
+  syncfusion_flutter_pdfviewer: ^20.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
