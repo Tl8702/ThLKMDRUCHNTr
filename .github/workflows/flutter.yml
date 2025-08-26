@@ -1,0 +1,43 @@
+name: Flutter CI & Firebase Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1) جلب الكود
+    - uses: actions/checkout@v4
+
+    # 2) تهيئة Flutter مع كاش pub للتسريع
+    - uses: subosito/flutter-action@v2      # يثبّت أحدث قناة stable
+      with:
+        flutter-version: 'stable'
+        cache: true                         # يُخزّن ~/.pub-cache تلقائيًّا
+
+    # 3) إعادة إنشاء ملف service-account.json من السرّ
+    - name: Restore Firebase key
+      run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > service-account.json
+
+    # 4) تثبيت التبعيات
+    - name: Pub get
+      run: flutter pub get
+
+    # 5) تشغيل الاختبارات
+    - name: Run tests
+      run: flutter test
+
+    # 6) بناء APK إصدار إطلاق
+    - name: Build APK
+      run: flutter build apk --release
+
+    # 7) (اختياري) نشر إلى Firebase Hosting
+    # - uses: FirebaseExtended/action-hosting-deploy@v0
+    #   with:
+    #     repoToken: "${{ secrets.GITHUB_TOKEN }}"
+    #     firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+    #     channelId: live   # غيّر إلى preview إذا أردت قنوات مراجعة
